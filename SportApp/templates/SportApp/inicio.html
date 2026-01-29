@@ -1,0 +1,60 @@
+{% extends 'SportApp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Jumbotron de bienvenida -->
+    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm border">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold text-primary">Bienvenido a OlympoSport</h1>
+            <p class="col-md-8 fs-4">La plataforma definitiva para la gestión de tus eventos deportivos. Controla equipos, jugadores, torneos y resultados desde un único lugar.</p>
+            
+            <div class="d-flex gap-2 mt-4">
+                <a href="{% url 'ver_eventos' %}" class="btn btn-primary btn-lg px-4 gap-3">
+                    <i class="bi bi-calendar-week"></i> Ver Calendario
+                </a>
+                <a href="{% url 'equipo_lista' %}" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="bi bi-people"></i> Gestionar Equipos
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- zona admin-->
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="alert alert-warning d-flex align-items-center shadow-sm" role="alert">
+                <i class="bi bi-shield-lock-fill fs-2 me-3"></i>
+                <div>
+                    <h4 class="alert-heading mb-1">Panel de Administración</h4>
+                    <p class="mb-0">Tienes permisos de administrador. Puedes acceder al panel de control avanzado de Django.</p>
+                    <hr>
+                    <a href="/admin/" class="btn btn-dark btn-sm" target="_blank">
+                        <i class="bi bi-speedometer2"></i> Ir al Admin de Django
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Tarjetas de acceso rápido -->
+    <div class="row align-items-md-stretch mt-4">
+        <div class="col-md-6">
+            <div class="h-100 p-5 text-white bg-dark rounded-3 shadow">
+                <h2 style="color: white;">Jugadores Estrella</h2>
+                <p>Consulta la base de datos de todos los jugadores federados, sus estadísticas y equipos actuales.</p>
+                <a href="{% url 'jugador_lista' %}" class="btn btn-outline-light" type="button">Ver Jugadores</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="h-100 p-5 bg-light border rounded-3 shadow-sm">
+                <h2>Torneos en Curso</h2>
+                <p>Sigue la clasificación en tiempo real de las ligas activas. Consulta resultados y próximos encuentros.</p>
+                <a href="{% url 'torneo_lista' %}" class="btn btn-outline-dark" type="button">Ver Torneos</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

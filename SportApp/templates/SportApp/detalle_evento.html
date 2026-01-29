@@ -1,0 +1,79 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+    <div class="text-center mb-4">
+        <h1 class="display-4">OlympoSport</h1>
+        <hr>
+    </div>
+
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-dark text-white text-center">
+            <h2>
+                <a href="{% url 'ver_equipo' evento.equipo_local.id %}" class="text-white text-decoration-none">{{ evento.equipo_local }}</a> 
+                vs 
+                <a href="{% url 'ver_equipo' evento.equipo_visitante.id %}" class="text-white text-decoration-none">{{ evento.equipo_visitante }}</a>
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center text-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    {% if evento.equipo_local.escudo %}
+                        <img src="{{ evento.equipo_local.escudo.url }}" alt="Escudo {{ evento.equipo_local.nombre }}" class="img-fluid" style="max-height: 150px;">
+                    {% else %}
+                        <a href="{% url 'ver_equipo' evento.equipo_local.id %}">
+                            <img src="https://via.placeholder.com/150?text=Sin+Escudo" class="img-fluid rounded-circle">
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'ver_equipo' evento.equipo_local.id %}"><h4 class="mt-2">{{ evento.equipo_local.nombre }}</h4></a>
+                    {% if evento.estado == 'JUGADO' %}
+                    <h3 class="mt-2"> {{ evento.marcador_local }}</h3>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h1 class="display-1 fw-bold">VS</h1>
+                </div>
+                
+                <div class="col-md-4">
+                    {% if evento.equipo_visitante.escudo %}
+                        <img src="{{ evento.equipo_visitante.escudo.url }}" alt="Escudo {{ evento.equipo_visitante.nombre }}" class="img-fluid" style="max-height: 150px;">
+                    {% else %}
+                        <a href="{% url 'ver_equipo' evento.equipo_visitante.id %}">
+                            <img src="https://via.placeholder.com/150?text=Sin+Escudo" class="img-fluid rounded-circle">
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'ver_equipo' evento.equipo_visitante.id %}"><h4 class="mt-2">{{ evento.equipo_visitante.nombre }}</h4></a>
+                    {% if evento.estado == 'JUGADO' %}
+                    <h3 class="mt-2"> {{ evento.marcador_visitante }}</h3>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="row text-center mt-4">
+                <div class="col-md-4">
+                    <p class="fs-5"><strong><i class="bi bi-trophy"><a href="{% url 'torneo_detalle' evento.torneo.id %}"></i> Torneo:</strong><br> {{ evento.torneo.nombre }}</p></a>
+                </div>
+                <div class="col-md-4">
+                    <p class="fs-5"><strong><i class="bi bi-calendar-event"></i> Fecha y Hora:</strong><br> {{ evento.fecha_hora }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="fs-5"><strong><i class="bi bi-geo-alt"></i> Lugar:</strong><br> {{ evento.lugar }}</p>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <p class="fs-5"><strong><i class="bi bi-info-circle"></i> Estado:</strong><br> {{ evento.estado }}</p>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <a href="{% url 'ver_eventos' %}" class="btn btn-secondary">Volver a la lista de eventos</a>
+            <a href="{% url 'estadisticas_partido' evento.id %}" class="btn btn-primary">Ver Estadísticas</a>
+            {% if user.is_staff %}
+            <a href="{% url 'partido_editar' evento.id %}" class="btn btn-secondary">Editar Partido</a>
+            <a href="{% url 'estadistica_crear_partido' evento.id %}" class="btn btn-success">Añadir Estadística</a>
+            {% endif %}
+            
+        </div>
+        
+    </div>
+{% endblock %}

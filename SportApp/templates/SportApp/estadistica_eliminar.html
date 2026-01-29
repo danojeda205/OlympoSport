@@ -1,0 +1,26 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger shadow">
+            <div class="card-header bg-danger text-white">
+                <h2 class="mb-0">Eliminar Estadística</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">¿Seguro que deseas eliminar la estadística de <strong>"{{ object.jugador.nombre }}"</strong> en el partido <strong>"{{ object.partido }}"</strong>?</p>
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill"></i> Esta acción no se puede deshacer.
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'estadisticas_partido' object.partido.id %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

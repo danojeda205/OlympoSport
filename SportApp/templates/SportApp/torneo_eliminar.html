@@ -1,0 +1,27 @@
+{% extends "SportApp/base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            
+            <div class="card-header bg-danger text-white">
+                <h3 class="mb-0">🗑️ Eliminar Torneo</h3>
+            </div>
+            <div class="card-body p-4">
+                <p>¿Estás seguro de que deseas eliminar el torneo "<strong>{{ object.nombre }}</strong>"?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{% url 'torneo_lista' %}" class="btn btn-secondary me-md-2">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash-fill"></i> Eliminar Torneo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

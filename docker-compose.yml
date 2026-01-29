@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: olympo_db_container
+    restart: always
+    environment:
+      MYSQL_DATABASE: olymposport_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: olympo_user
+      MYSQL_PASSWORD: olympo_password
+    ports:
+      # Izquierda (3307) = Windows
+      # Derecha (3306) = Dentro de Docker
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

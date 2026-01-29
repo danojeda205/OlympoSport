@@ -1,0 +1,52 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    {% if form.instance.pk %}
+                        ✏️ Editar Inscripción
+                    {% else %}
+                        📝 Inscribir Equipo
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                
+                
+                <div class="alert alert-info d-flex align-items-center" role="alert">
+                    <i class="bi bi-info-circle-fill me-2 fs-4"></i>
+                    <div>
+                        <strong>Regla de Inscripción:</strong> El Equipo y el Torneo deben ser del mismo deporte. Si intentas mezclarlos, el sistema te bloqueará.
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- Renderizado automático de campos -->
+                    {{ form.as_p }}
+
+                    <!-- Zona de Errores (Aquí saldrá tu validación clean() del modelo) -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger mt-3">
+                            <strong><i class="bi bi-exclamation-triangle"></i> Error:</strong>
+                            Por favor revisa los datos. Es posible que los deportes no coincidan.
+                        </div>
+                    {% endif %}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-save"></i> Guardar Inscripción
+                        </button>
+                        <a href="{% url 'equipo_lista' %}" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+    <h2>Detalles del Jugador: {{ jugador.nombre }}</h2>
+    <div class="card">
+        <div class="card-body">
+            {% if jugador.foto %}
+                <img src="{{ jugador.foto.url }}" class="img-fluid mb-3" alt="{{ jugador.nombre }}" style="max-height: 300px;">
+            {% endif %}
+            <p><strong>Nombre:</strong> {{ jugador.nombre }}</p>
+            <p><strong>Dorsal:</strong> {{ jugador.dorsal }}</p>
+            <a href="{% url 'ver_equipo' jugador.equipo.pk %}"><p><strong>Equipo:</strong> {{ jugador.equipo }}</p></a>
+            
+            {% if user.is_staff %}
+            <a href="{% url 'jugador_editar' jugador.pk %}" class="btn btn-warning">Editar</a>
+            <a href="{% url 'jugador_eliminar' jugador.pk %}" class="btn btn-danger">Eliminar</a>
+            {% endif %}
+            <a href="{% url 'jugador_lista' %}" class="btn btn-secondary">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

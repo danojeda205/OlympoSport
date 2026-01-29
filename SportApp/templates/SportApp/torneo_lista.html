@@ -1,0 +1,39 @@
+{% extends 'SportApp/base.html' %}
+{% block content %}
+    <h1 class="mb-4">Lista de Torneos</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Deporte</th>
+                <th>Fecha de Inicio</th>
+                <th>Fecha de Fin</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for torneo in torneos %}
+            <tr>
+                <td>{{ torneo.nombre }}</td></a>
+                <td>{{ torneo.deporte }}</td>
+                <td>{{ torneo.temporada }}</td>
+                <td>{{ torneo.estado }}</td>
+                <td>
+                    <a href="{% url 'torneo_detalle' torneo.pk %}" class="btn btn-info btn-sm">Ver Detalles</a>
+                    {% if user.is_staff %}
+                    <a href="{% url 'torneo_editar' torneo.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'torneo_eliminar' torneo.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No hay torneos disponibles.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if user.is_staff %}
+    <a href="{% url 'torneo_crear' %}" class="btn btn-primary">Crear Nuevo Torneo</a>
+    {% endif %}
+{% endblock %}

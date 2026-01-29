@@ -1,0 +1,137 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    <!-- header del qeuipo -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-2 text-center">
+            {% if equipo.escudo %}
+                <img src="{{ equipo.escudo.url }}" alt="{{ equipo.nombre }}" class="img-fluid rounded shadow-sm" style="width: 120px; height: 120px; object-fit: cover;">
+            {% else %}
+                <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 120px; height: 120px;">
+                    <i class="bi bi-shield-shaded text-secondary" style="font-size: 3rem;"></i>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-10">
+            <h1 class="display-5 fw-bold text-primary">{{ equipo.nombre }}</h1>
+            <div class="d-flex gap-3 text-muted">
+                <span><i class="bi bi-trophy"></i> {{ equipo.deporte.nombre }}</span>
+                <span><i class="bi bi-geo-alt"></i> {{ equipo.ciudad }}</span>
+                <span><i class="bi bi-person-badge"></i> {{ equipo.entrenador }}</span>
+            </div>
+            
+            <!-- acciones para el dueño del club o admin -->
+            
+            {% if user.is_staff or user == equipo.usuario %}
+            <div class="mt-3">
+                <a href="{% url 'equipo_editar' equipo.id %}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i> Editar Datos
+                </a>
+                <a href="{% url 'inscripcion_crear' %}" class="btn btn-sm btn-success">
+                    <i class="bi bi-plus-circle"></i> Inscribir en Torneo
+                </a>
+                <a href="{% url 'jugador_crear' %}" class="btn btn-sm btn-secondary">
+                    <i class="bi bi-person-plus"></i> Fichar Jugador
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- torneos -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-bottom-0 py-3">
+                    <h5 class="mb-0 text-dark"><i class="bi bi-trophy-fill text-warning"></i> Competiciones</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Torneo</th>
+                                <th class="text-center">Pts</th>
+                                <!-- Columna de acciones solo si tienes permisos -->
+                                {% if user.is_staff or user == equipo.usuario %}
+                                <th class="text-end">Acción</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for inscripcion in inscripciones %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'torneo_detalle' inscripcion.torneo.id %}" class="text-decoration-none fw-bold">
+                                        {{ inscripcion.torneo.nombre }}
+                                    </a>
+                                    <div class="small text-muted">{{ inscripcion.torneo.temporada }}</div>
+                                </td>
+                                <td class="text-center fw-bold">{{ inscripcion.puntos_acumulados }}</td>
+                                
+                                {% if user.is_staff or user == equipo.usuario %}
+                                <td class="text-end">
+                                    <a href="{% url 'inscripcion_eliminar' inscripcion.id %}" class="btn btn-sm btn-outline-danger" title="Retirar del torneo">
+                                        <i class="bi bi-x-lg"></i>
+                                    </a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="text-center py-4 text-muted">No participa en torneos.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- gestion de jugadores -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-bottom-0 py-3">
+                    <h5 class="mb-0 text-dark"><i class="bi bi-people-fill text-info"></i> Plantilla</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Jugador</th>
+                                {% if user.is_staff or user == equipo.usuario %}
+                                <th class="text-end">Gestión</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for jugador in equipo.jugadores.all %}
+                            <tr>
+                                <td class="text-center"><span class="badge bg-secondary">{{ jugador.dorsal }}</span></td>
+                                <td>
+                                    <a href="{% url 'jugador_detalle' jugador.id %}" class="text-decoration-none text-dark">
+                                        {% if jugador.foto %}
+                                            <img src="{{ jugador.foto.url }}" class="rounded-circle me-1" style="width: 25px; height: 25px; object-fit: cover;">
+                                        {% endif %}
+                                        {{ jugador.nombre }} {{ jugador.apellido }}
+                                    </a>
+                                </td>
+                                
+                                {% if user.is_staff or user == equipo.usuario %}
+                                <td class="text-end">
+                                    <a href="{% url 'jugador_editar' jugador.id %}" class="text-primary me-2"><i class="bi bi-pencil"></i></a>
+                                    <a href="{% url 'jugador_eliminar' jugador.id %}" class="text-danger"><i class="bi bi-trash"></i></a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="text-center py-4 text-muted">Sin jugadores registrados.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

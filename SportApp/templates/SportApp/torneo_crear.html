@@ -1,0 +1,46 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <!-- Encabezado con color distintivo para Torneos (Warning/Amarillo queda bien para trofeos) -->
+            <div class="card-header bg-warning text-dark">
+                <h3 class="mb-0">
+                    {% if form.instance.pk %}
+                        ✏️ Editar Torneo
+                    {% else %}
+                        🏆 Crear Nuevo Torneo
+                    {% endif %}
+                </h3>
+            </div>
+            
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Renderizado automático con tus widgets de forms.py -->
+                    {{ form.as_p }}
+
+                    <!-- Zona de errores -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger mt-3">
+                            <strong><i class="bi bi-exclamation-triangle"></i> Atención:</strong>
+                            Por favor corrige los errores indicados arriba.
+                        </div>
+                    {% endif %}
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{% url 'torneo_lista' %}" class="btn btn-secondary me-md-2">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-trophy-fill"></i> Guardar Torneo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

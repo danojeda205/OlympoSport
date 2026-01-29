@@ -1,0 +1,54 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+    <h1 class="mb-4 text-center">OlympoSport - Calendario</h1>
+    <hr>
+
+    <form method="get" class="mb-4">
+        <label for="deporte" class="form-label">Filtrar por deporte</label>
+        <div class="d-flex gap-2">
+            <select id="deporte" name="deporte" class="form-select" style="max-width: 420px;">
+                <option value="" {% if not deporte_seleccionado %}selected{% endif %}>Todos</option>
+                {% for d in deportes %}
+                    <option value="{{ d.id }}" {% if deporte_seleccionado == d.id|stringformat:"s" %}selected{% endif %}>{{ d.nombre }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Aplicar</button>
+        </div>
+    </form>
+    {% if user.is_staff %}
+    <a href="{% url 'partido_crear' %}" class="btn btn-success mb-4">Añadir Evento</a>
+    {% endif %}
+    
+    <div class="row">
+        {% for deporte, eventos in secciones %}
+            <div class="col-md-12 mb-5">
+                <h2 class="text-primary">{{ deporte.nombre }}</h2>
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% for evento in eventos %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ evento.equipo_local }} vs {{ evento.equipo_visitante }}</h5>
+                                <p class="card-text"><small class="text-muted">{{ evento.fecha_hora }}</small></p>
+                                <p class="card-text"><i class="bi bi-geo-alt-fill"></i> {{ evento.lugar }}</p>
+                                <a href="{% url 'detalle_evento' evento.id %}" class="btn btn-outline-primary btn-sm">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-info" role="alert">
+                            No hay eventos de {{ deporte.nombre }} disponibles en este momento.
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mb-4">
+        <a href="{% url 'inicio' %}" class="btn btn-secondary">Volver al inicio</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- titulo del Torneo -->
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-body text-center bg-light rounded">
+            <h1 class="display-5 text-primary fw-bold">{{ torneo.nombre }}</h1>
+            <p class="fs-4 text-muted">Temporada: {{ torneo.temporada }}</p>
+            <span class="badge bg-info text-dark fs-6">{{ torneo.deporte.nombre }}</span>
+            <span class="badge bg-secondary fs-6">{{ torneo.get_estado_display }}</span>
+        </div>
+    </div>
+
+    <!-- TABLA DE CLASIFICACIÓN -->
+    <h3 class="mb-3 border-bottom pb-2"><i class="bi bi-table"></i> Clasificación General</h3>
+    
+    <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="text-center">Pos</th>
+                    <th scope="col">Equipo</th>
+                    <th scope="col">Ciudad</th>
+                    <th scope="col" class="text-center">Puntos</th>
+                    <th scope="col" class="text-center">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inscripcion in clasificacion %}
+                <tr>
+                    <!-- Posición (usamos el contador del bucle) -->
+                    <th scope="row" class="text-center">{{ forloop.counter }}º</th>
+                    
+                    <!-- Nombre y Escudo -->
+                    <td>
+                        <a href="{% url 'ver_equipo' inscripcion.equipo.id %}" class="text-decoration-none text-dark fw-bold">
+                            {% if inscripcion.equipo.escudo %}
+                                <img src="{{ inscripcion.equipo.escudo.url }}" alt="Escudo" class="me-2" style="width: 30px; height: 30px; object-fit: contain;">
+                            {% else %}
+                                <i class="bi bi-shield-shaded me-2 text-secondary" style="font-size: 1.2rem;"></i>
+                            {% endif %}
+                            {{ inscripcion.equipo.nombre }}
+                        </a>
+                    </td>
+                    
+                    <td>{{ inscripcion.equipo.ciudad }}</td>
+                    
+                    <!-- Puntos (Destacados) -->
+                    <td class="text-center fw-bold fs-5 text-primary">{{ inscripcion.puntos_acumulados }}</td>
+                    
+                    <!-- Pagado (Badge) -->
+                    <td class="text-center">
+                        {% if inscripcion.ha_pagado %}
+                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Al día</span>
+                        {% else %}
+                            <span class="badge bg-danger"><i class="bi bi-exclamation-circle"></i> Pendiente</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">
+                        <em>Aún no hay equipos inscritos en este torneo.</em>
+                        <br>
+                        {% if user.is_staff %}
+                        <a href="{% url 'inscripcion_crear' %}" class="btn btn-sm btn-outline-primary mt-2">Inscribir Equipos</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- (solo yo) -->
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        {% if user.is_staff %}
+        <a href="{% url 'torneo_editar' torneo.id %}" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Editar Torneo</a>
+        {% endif %}
+        <a href="{% url 'estadisticas'  %}" class="btn btn-primary"><i class="bi-bar-chart-fill"></i> Estadísticas del torneo</a>
+        <a href="{% url 'ver_eventos' %}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Volver al Calendario</a>
+    </div>
+</div>
+{% endblock %}

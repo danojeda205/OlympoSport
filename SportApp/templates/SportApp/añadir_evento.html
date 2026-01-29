@@ -1,0 +1,13 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+    <h1 class="mb-4 text-center">Añadir Nuevo Evento</h1>
+    <hr>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Evento</button>
+        <a href="{% url 'ver_eventos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endblock %}

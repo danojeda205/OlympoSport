@@ -1,0 +1,36 @@
+{% extends "SportApp/base.html" %}
+
+{% block content %}
+    <h2>Lista de Jugadores</h2>
+    {% if user.is_staff %}
+    <a href="{% url 'jugador_crear' %}" class="btn btn-primary mb-3">Crear Nuevo Jugador</a>
+    {% endif %}
+    <div class="row">
+        {% for jugador in jugadores %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if jugador.foto %}
+                        <img src="{{ jugador.foto.url }}" class="card-img-top" alt="{{ jugador.nombre }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/200?text=Sin+Foto" class="card-img-top" alt="Sin Foto" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ jugador.nombre }}</h5>
+                        <p class="card-text"><strong>Equipo:</strong> {{ jugador.equipo }}</p>
+                        <p class="card-text"><strong>Dorsal:</strong> {{ jugador.dorsal }}</p>
+                        <a href="{% url 'jugador_detalle' jugador.pk %}" class="btn btn-info">Ver Detalles</a>
+                        {% if user.is_staff %}
+                        <a href="{% url 'jugador_editar' jugador.pk %}" class="btn btn-warning">Editar</a>
+                        <a href="{% url 'jugador_eliminar' jugador.pk %}" class="btn btn-danger">Eliminar</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No hay jugadores registrados.</p>
+        {% endfor %}
+    </div>
+    <hr>
+    <br>
+    <a href="{% url 'inicio' %}">Volver al inicio</a>
+{% endblock %}
