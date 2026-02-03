@@ -19,7 +19,7 @@
                         <p class="card-text"><strong>Equipo:</strong> {{ jugador.equipo }}</p>
                         <p class="card-text"><strong>Dorsal:</strong> {{ jugador.dorsal }}</p>
                         <a href="{% url 'jugador_detalle' jugador.pk %}" class="btn btn-info">Ver Detalles</a>
-                        {% if user.is_staff %}
+                        {% if user.is_staff or jugador.equipo and jugador.equipo.usuario == user  %}
                         <a href="{% url 'jugador_editar' jugador.pk %}" class="btn btn-warning">Editar</a>
                         <a href="{% url 'jugador_eliminar' jugador.pk %}" class="btn btn-danger">Eliminar</a>
                         {% endif %}

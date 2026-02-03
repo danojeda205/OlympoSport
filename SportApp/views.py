@@ -93,8 +93,10 @@ class JugadorListView(LoginRequiredMixin, ListView):
     context_object_name = 'jugadores'
     
     def get_queryset(self):
-        #jugadores de los equipos del usuario logueado
-        return Jugador.objects.filter(equipo__usuario=self.request.user).order_by('equipo', 'dorsal')
+        if self.request.user.is_staff:
+            return Jugador.objects.select_related('equipo').order_by('equipo', 'dorsal')
+
+        return Jugador.objects.filter(equipo__usuario=self.request.user).select_related('equipo').order_by('equipo', 'dorsal')
 
 class JugadorDetailView(DetailView):
     model = Jugador
@@ -144,6 +146,9 @@ def ver_equipo(request, equipo_id):
 class EquipoListView(LoginRequiredMixin,ListView):
     model = Equipo
     def get_queryset(self):
+        if self.request.user.is_staff:
+            return Equipo.objects.annotate(num_jugadores=models.Count('jugadores')).order_by('nombre')
+
         queryset = Equipo.objects.filter(usuario=self.request.user)#nos quedamos con los equipos del usuario 
 
         queryset = queryset.annotate(num_jugadores=models.Count('jugadores'))#anotamos el numero de jugadores de cada equipo
@@ -178,6 +183,8 @@ class EquipoUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('equipo_lista')
     
     def get_queryset(self):
+        if self.request.user.is_staff:
+            return Equipo.objects.all()
         return Equipo.objects.filter(usuario=self.request.user)#solo permitimos editar equipos del usuario
 
 class EquipoDeleteView(LoginRequiredMixin, DeleteView):
@@ -185,6 +192,8 @@ class EquipoDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'SportApp/equipo_eliminar.html'
     success_url = reverse_lazy('equipo_lista')
     def get_queryset(self):
+        if self.request.user.is_staff:
+            return Equipo.objects.all()
         return Equipo.objects.filter(usuario=self.request.user)#solo permitimos eliminar equipos del usuario
 
 
