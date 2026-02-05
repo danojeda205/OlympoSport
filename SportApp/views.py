@@ -29,12 +29,12 @@ def ver_eventos(request):
     deportes = Deporte.objects.order_by('nombre')
     
     #
-    # Preparamos la superconsulta para evitar el n+1 pero no la ejecutamos
+    # Preparamos la superconsulta para evitar el n+1
     partidos_qs = Partido.objects.select_related(
         'torneo', 'torneo__deporte', 'equipo_local', 'equipo_visitante'
     )
     
-    #  Aplicar filtro si es válido el deporte_id
+    #  Aplicar filtro si es valido el deporte_id
     if deporte_id is not None:
         partidos_qs = partidos_qs.filter(torneo__deporte_id=deporte_id)# buscamos en la relacion atraves del torneo
 
