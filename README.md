@@ -1,5 +1,3 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=21998979&assignment_repo_type=AssignmentRepo)
-º
 # 🏆 Olympo Sport - Gestor de Eventos Deportivos
 
 [![Django](https://img.shields.io/badge/Django-5.2.8-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
@@ -13,32 +11,35 @@
 ## ✨ Características Principales
 
 ### 🏅 Gestión Multideporte
-- Soporte para deportes de **Equipo** (Fútbol, Baloncesto) e **Individuales** (Tenis, Pádel).
-- **Sistemas de Puntuación Adaptables**:
+- **Adaptabilidad Total**: Soporte para deportes de **Equipo** (Fútbol, Baloncesto) e **Individuales** (Tenis, Pádel).
+- **Sistemas de Puntuación Personalizados**:
   - Goles (Fútbol, Balonmano)
   - Canastas/Puntos (Baloncesto)
   - Sets (Tenis, Voleibol, Pádel)
   - Puntos Genéricos
+- **Validaciones Inteligentes**: El sistema impide mezclar equipos de diferentes deportes en un mismo torneo o partido.
 
-### 🏆 Administración de Torneos
-- Creación de torneos por temporadas (ej. 2024/2025).
-- **Estados del Torneo**: Inscripción Abierta, En Curso, Finalizado.
-- **Clasificación Automática**: Tabla de posiciones generada dinámicamente basada en los puntos acumulados por los equipos inscritos.
+### 📊 Dashboard de Estadísticas Avanzado
+- **Visión Global y Filtrada**: Los usuarios visualizan estadísticas consolidadas (puntos totales, minutos jugados) filtradas automáticamente por los deportes en los que participan sus equipos.
+- **Rankings de Rendimiento**:
+  - Top Anotadores (MVP)
+  - Top Jugadores por Minutos
+  - Top Participaciones
+- **Detalle por Partido**: Registro minucioso de estadísticas individuales (puntos, faltas, observaciones) por cada encuentro.
 
-### 👥 Gestión de Equipos y Jugadores
-- **Equipos**: Perfiles completos con entrenador, ciudad y escudo.
-- **Jugadores**: Fichas con dorsal, foto y asociación a equipos.
-- **Validaciones**: Control lógico para asegurar que los equipos y jugadores correspondan al deporte del torneo.
+### 👥 Gestión de Clubes y Equipos (Usuario)
+- **Autogestión**: Los usuarios registrados pueden crear y administrar sus propios **Equipos** y **Plantillas de Jugadores**.
+- **Perfiles Completos**:
+  - **Equipos**: Entrenador, ciudad, escudo personalizado.
+  - **Jugadores**: Ficha técnica con dorsal, foto y vinculación histórica al equipo.
 
-### 📅 Calendario y Partidos
-- Programación de partidos con fecha, hora, lugar y jornada.
-- **Fases de Competición**: Fase Regular, Semifinales, Finales.
-- **Estados del Partido**: Pendiente, Jugado, Suspendido.
-- Registro de marcadores y estadísticas detalladas por partido.
-
-### 🔒 Roles y Permisos
-- **Vista Pública**: Acceso libre a calendarios, resultados, clasificaciones y detalles de equipos.
-- **Panel de Staff**: Área restringida para administradores para crear, editar y eliminar registros (CRUD completo).
+### 🏆 Competición y Torneos (Staff/Admin)
+- **Organización de Torneos**: Creación de competiciones por temporadas (ej. 2024/2025) y estados (Inscripción, En Curso, Finalizado).
+- **Gestión de Partidos**:
+  - Programación de calendario (Fecha, Hora, Lugar, Jornada).
+  - Definición de fases (Regular, Semifinal, Final).
+  - Registro de resultados y cierre de actas.
+- **Inscripciones**: Control de equipos participantes en cada torneo.
 
 ---
 
@@ -46,11 +47,12 @@
 
 El sistema se basa en un modelo relacional robusto que garantiza la integridad de los datos:
 
-- **Deporte**: Define las reglas básicas (tipo y puntuación).
-- **Torneo**: La competición en sí misma.
-- **Equipo/Jugador**: Los participantes.
-- **Inscripción**: Tabla intermedia que vincula equipos a torneos y almacena la puntuación.
-- **Partido**: Encuentros entre equipos dentro de un torneo.
+- **Deporte**: Define las reglas del juego y puntuación.
+- **Torneo**: La competición, contenedora de partidos e inscripciones.
+- **Equipo/Jugador**: Entidades base gestionadas por los usuarios.
+- **Inscripción**: Vinculación validada entre Equipos y Torneos.
+- **Partido**: Encuentro deportivo con gestión de estados y fases.
+- **EstadísticaPartido**: Desglose granular del rendimiento de cada jugador por partido.
 
 ![Diagrama E/R del Proyecto](OlympoSport.drawio%20(2).png)
 
@@ -60,10 +62,11 @@ El sistema se basa en un modelo relacional robusto que garantiza la integridad d
 
 - **Backend**: Python, Django 5.2.8
 - **Base de Datos**: 
-  - SQLite (Por defecto en desarrollo)
-  - Compatible con MySQL (Librería `mysqlclient` incluida)
-- **Imágenes**: Pillow (Gestión de escudos y fotos de jugadores)
-- **Frontend**: HTML5, CSS3, Django Templates
+  - SQLite (Desarrollo simple)
+  - Compatible con MySQL (Producción)
+- **Gráficos e Imágenes**: Pillow (Procesamiento de escudos y fotos)
+- **Frontend**: HTML5, CSS3, Django Templates (Diseño Responsive)
+
 
 ---
 
@@ -74,11 +77,11 @@ Sigue estos pasos para ejecutar el proyecto en tu entorno local:
 ### 1. Clonar el repositorio
 ```bash
 git clone <url-del-repo>
-cd proyectopersonal-xdojebal477-hub
+cd ut6-1proyectopersonal-xdojebal477-hub
 ```
 
 ### 2. Crear y activar un entorno virtual
-Es recomendable usar un entorno virtual para aislar las dependencias.
+Aisla las dependencias del proyecto.
 
 **Windows:**
 ```bash
@@ -98,18 +101,18 @@ pip install -r requirements.txt
 ```
 
 ### 4. Aplicar migraciones
-Esto creará la estructura de la base de datos (SQLite por defecto).
+Inicializa la base de datos (SQLite por defecto).
 ```bash
 python manage.py migrate
 ```
 
 ### 5. Crear un superusuario (Administrador)
-Necesario para acceder al panel de administración y a las funciones de Staff.
+Necesario para acceder al panel de administración y funciones de Staff.
 ```bash
 python manage.py createsuperuser
 ```
 
-### 6. Ejecutar el servidor de desarrollo
+### 6. Ejecutar el servidor
 ```bash
 python manage.py runserver
 ```
@@ -117,21 +120,22 @@ Accede a la aplicación en: `http://127.0.0.1:8000/`
 
 ---
 
-## 📖 Guía de Uso
+## 📖 Guía de Uso y Roles
 
-### Para Usuarios (Público)
-- Navega por la página de inicio para ver las últimas novedades.
-- Accede a **"Eventos"** para ver el calendario de partidos, filtrando por deporte.
-- Consulta la **"Clasificación"** dentro del detalle de cada torneo.
-- Explora los perfiles de los **Equipos** y sus plantillas.
+### 👤 Usuario Anónimo (Público)
+- **Exploración**: Visualizar la página de inicio y novedades.
+- **Calendario**: Consultar "Eventos" y filtrar partidos por deporte.
+- **Clasificaciones**: Ver tablas de posiciones e información básica de equipos.
 
-### Para Administradores (Staff)
-- Inicia sesión con tu cuenta de superusuario.
-- Aparecerán opciones de edición (botones de crear, editar, eliminar) en las diferentes secciones.
-- Puedes gestionar:
-  - Altas de nuevos deportes, torneos y equipos.
-  - Inscripción de equipos en torneos.
-  - Actualización de resultados de partidos y estados de torneos.
+### 🛡️ Usuario Registrado (Manager de Club)
+- **Mis Equipos**: Crear y editar el perfil de sus equipos (subir escudo, definir ciudad).
+- **Plantilla**: Dar de alta jugadores, asignar dorsales y fotos.
+- **Estadísticas**: Acceder al "Dashboard de Estadísticas" para ver el rendimiento acumulado de sus jugadores y competiciones.
+
+### ⚙️ Administrador (Staff)
+- **Gestión Total**: Acceso completo (CRUD) a todas las entidades desde el panel admin o vistas de gestión.
+- **Torneos**: Crear nuevos torneos y abrir fases de inscripción.
+- **Arbitraje**: Crear partidos, introducir resultados finales y rellenar actas de estadísticas.
 
 ---
 
@@ -139,27 +143,18 @@ Accede a la aplicación en: `http://127.0.0.1:8000/`
 
 ```
 proyectopersonal/
-├── OlympoSport/        # Configuración principal del proyecto (settings, urls)
-├── SportApp/           # Aplicación principal
-│   ├── migrations/     # Historial de cambios en la BD
-│   ├── static/         # Archivos CSS, JS e imágenes estáticas
-│   ├── templates/      # Plantillas HTML
-│   ├── models.py       # Definición de datos
-│   ├── views.py        # Lógica de negocio
-│   └── urls.py         # Rutas de la aplicación
-├── media/              # Archivos subidos por usuarios (escudos, fotos)
-├── manage.py           # Script de gestión de Django
-└── requirements.txt    # Lista de dependencias
+├── OlympoSport/        # Configuración principal (settings, urls)
+├── SportApp/           # Aplicación Core
+│   ├── migrations/     # Control de versiones de BD
+│   ├── static/         # Assets (CSS, JS, Imágenes fijas)
+│   ├── templates/      # Plantillas HTML (Vistas)
+│   ├── models.py       # Definición de datos y lógica de validación
+│   ├── views.py        # Controladores y lógica de negocio (CBVs)
+│   └── urls.py         # Enrutador de la aplicación
+├── media/              # Archivos subidos por usuarios (Dynamic content)
+├── manage.py           # CLI de Django
+└── requirements.txt    # Dependencias del proyecto
 ```
-
----
-
-## 🔮 Próximos Pasos
-
-- [ ] Implementación de base de datos MySQL para producción.
-- [ ] Sistema de autenticación para usuarios no-staff (aficionados).
-- [ ] API REST con Django REST Framework.
-- [ ] Generación de actas de partido en PDF.
 
 ---
 
