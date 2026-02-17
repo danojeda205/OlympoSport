@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.http import Http404
 from .models import *
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView,TemplateView
@@ -76,35 +76,26 @@ def ver_eventos(request):
 
 @login_required
 def detalle_evento(request, evento_pk):
-    #botones para sumar o restar goles con funciones
-
-
-
     evento=get_object_or_404(Partido.objects.select_related('torneo','equipo_local','equipo_visitante'), pk=evento_pk)
-
-    
-    
-    
-    
-    
-    
-        
-
-    if request.method =="GET":
-        accion=request.GET.get('accion')
-        if accion=="añadir":
-            evento.marcador_local+1
-        elif accion=="restar":
-            evento.marcador_local-1
-
-
-    
-
-
     return render(request, 'SportApp/detalle_evento.html', {'evento': evento})
 
 
-# def sumar():
+def actualizar_marcador(request, partido_id, accion):
+    partido = get_object_or_404(Partido, pk=partido_id)
+    
+    if accion == 'local_sumar':
+        partido.marcador_local += 1
+    elif accion == 'local_restar' and partido.marcador_local > 0:
+        partido.marcador_local -= 1
+    elif accion == 'visitante_sumar':
+        partido.marcador_visitante += 1
+    elif accion == 'visitante_restar' and partido.marcador_visitante > 0:
+        partido.marcador_visitante -= 1
+        
+    partido.save()
+    
+    # Redirigimos de vuelta al detalle del evento
+    return redirect('detalle_evento', evento_pk=partido.id)
 
 class EventoCreateView(StaffRequiredMixin, CreateView):
     model = Partido

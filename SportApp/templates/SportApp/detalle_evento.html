@@ -26,14 +26,13 @@
                     {% endif %}
                     <a href="{% url 'ver_equipo' evento.equipo_local.id %}"><h4 class="mt-2">{{ evento.equipo_local.nombre }}</h4></a>
                     {% if evento.estado == 'JUGADO' %}
-                    <h3 class="mt-2"> {{ evento.marcador_local }}</h3>
-                    <form method="post" action="">
-                        {%csrf_token%}
-                        <input type="hidden" name="accion" value="añadir">
-                        <button type="submit"> Añadir</button>
-                        
-                    </form>
-                    {% endif %}
+                    <h3 class="mt-2"> {{ evento.marcador_local }}</h3>{%endif%}
+                    <div class="btn-group mt-2" role="group">
+                        <a href="{% url 'actualizar_marcador' evento.id 'local_restar' %}" >Restar</a>
+                        <br>
+                        <a href="{% url 'actualizar_marcador' evento.id 'local_sumar' %}" >Sumar</a>
+                    </div>
+                    
                 </div>
                 
                 <div class="col-md-4 mb-3 mb-md-0">
@@ -52,6 +51,10 @@
                     {% if evento.estado == 'JUGADO' %}
                     <h3 class="mt-2"> {{ evento.marcador_visitante }}</h3>
                     {% endif %}
+                    <div class="btn-group mt-2" role="group">
+                        <a href="{% url 'actualizar_marcador' evento.id 'visitante_restar' %}" >Restar</a>
+                        <a href="{% url 'actualizar_marcador' evento.id 'visitante_sumar' %}" >Sumar</a>
+                    </div>
                 </div>
             </div>
             

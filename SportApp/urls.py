@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.inicio, name='inicio'),
     path('eventos/', views.ver_eventos, name='ver_eventos'),
     path('eventos/<int:evento_pk>/', views.detalle_evento, name='detalle_evento'),
+    path('partido/<int:partido_id>/marcador/<str:accion>/', views.actualizar_marcador, name='actualizar_marcador'),
     path('añadir_evento/', views.EventoCreateView.as_view(), name='añadir_evento'),
     
     
