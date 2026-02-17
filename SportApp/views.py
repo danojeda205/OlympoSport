@@ -76,8 +76,35 @@ def ver_eventos(request):
 
 @login_required
 def detalle_evento(request, evento_pk):
+    #botones para sumar o restar goles con funciones
+
+
+
     evento=get_object_or_404(Partido.objects.select_related('torneo','equipo_local','equipo_visitante'), pk=evento_pk)
+
+    
+    
+    
+    
+    
+    
+        
+
+    if request.method =="GET":
+        accion=request.GET.get('accion')
+        if accion=="añadir":
+            evento.marcador_local+1
+        elif accion=="restar":
+            evento.marcador_local-1
+
+
+    
+
+
     return render(request, 'SportApp/detalle_evento.html', {'evento': evento})
+
+
+# def sumar():
 
 class EventoCreateView(StaffRequiredMixin, CreateView):
     model = Partido
@@ -427,3 +454,15 @@ class EstadisticaPartidoDeleteView(LoginRequiredMixin, StaffRequiredMixin, Delet
     def get_success_url(self):
         return reverse('estadisticas_partido', kwargs={'partido_pk': self.object.partido.pk})
         
+
+
+
+
+
+
+
+
+
+"""
+
+"""

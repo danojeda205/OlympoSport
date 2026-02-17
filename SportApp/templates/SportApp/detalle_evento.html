@@ -27,6 +27,12 @@
                     <a href="{% url 'ver_equipo' evento.equipo_local.id %}"><h4 class="mt-2">{{ evento.equipo_local.nombre }}</h4></a>
                     {% if evento.estado == 'JUGADO' %}
                     <h3 class="mt-2"> {{ evento.marcador_local }}</h3>
+                    <form method="post" action="">
+                        {%csrf_token%}
+                        <input type="hidden" name="accion" value="añadir">
+                        <button type="submit"> Añadir</button>
+                        
+                    </form>
                     {% endif %}
                 </div>
                 
