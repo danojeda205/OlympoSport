@@ -28,9 +28,8 @@
                     {% if evento.estado == 'JUGADO' %}
                     <h3 class="mt-2"> {{ evento.marcador_local }}</h3>{%endif%}
                     <div class="btn-group mt-2" role="group">
-                        <a href="{% url 'actualizar_marcador' evento.id 'local_restar' %}" >Restar</a>
-                        <br>
-                        <a href="{% url 'actualizar_marcador' evento.id 'local_sumar' %}" >Sumar</a>
+                        <a href="{% url 'actualizar_marcador' evento.id 'local_restar' %}" class="btn btn-outline-danger btn-sm"><i class="bi bi-dash-lg"></i></a>
+                        <a href="{% url 'actualizar_marcador' evento.id 'local_sumar' %}" class="btn btn-outline-success btn-sm"><i class="bi bi-plus-lg"></i></a>
                     </div>
                     
                 </div>
@@ -52,8 +51,8 @@
                     <h3 class="mt-2"> {{ evento.marcador_visitante }}</h3>
                     {% endif %}
                     <div class="btn-group mt-2" role="group">
-                        <a href="{% url 'actualizar_marcador' evento.id 'visitante_restar' %}" >Restar</a>
-                        <a href="{% url 'actualizar_marcador' evento.id 'visitante_sumar' %}" >Sumar</a>
+                        <a href="{% url 'actualizar_marcador' evento.id 'visitante_restar' %}" class="btn btn-outline-danger btn-sm"><i class="bi bi-dash-lg"></i></a>
+                        <a href="{% url 'actualizar_marcador' evento.id 'visitante_sumar' %}" class="btn btn-outline-success btn-sm"><i class="bi bi-plus-lg"></i></a>
                     </div>
                 </div>
             </div>

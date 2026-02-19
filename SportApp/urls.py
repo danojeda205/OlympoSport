@@ -1,5 +1,12 @@
-from  django.urls import path
+from  django.urls import include, path
 from . import views
+
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'equipos', views.EquipoViewSet)
+router.register(r'jugadores', views.JugadorViewSet)
+router.register(r'partidos', views.PartidoViewSet)
 urlpatterns = [
 
     path('', views.inicio, name='inicio'),
@@ -48,4 +55,7 @@ urlpatterns = [
 
     path('partidos/<int:partido_pk>/estadisticas/', views.EstadisticaPartidoPorPartidoListView.as_view(), name='estadisticas_partido'),
     path('partidos/<int:partido_pk>/estadisticas/crear/', views.EstadisticaPartidoCreateView.as_view(), name='estadistica_crear_partido'),
+
+
+    path('api/', include(router.urls)),
 ]

@@ -1,11 +1,16 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import Http404
+
+from SportApp.permissions import IsOwnerOrReadOnly
 from .models import *
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView,TemplateView
 from .forms import *
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+#=================================================================================================
+from rest_framework import viewsets,permissions
+from .serializers import EquipoSerializer, JugadorSerializer, PartidoSerializer
 
 class StaffRequiredMixin(UserPassesTestMixin):# mixin para restringir acceso a usuarios staff
     def test_func(self):
@@ -447,13 +452,24 @@ class EstadisticaPartidoDeleteView(LoginRequiredMixin, StaffRequiredMixin, Delet
         
 
 
+#========================== Vistas para las API's DE DRF  ==========================
 
 
 
+class EquipoViewSet(viewsets.ModelViewSet):
+    queryset = Equipo.objects.all()
+    serializer_class = EquipoSerializer
+    permission_classes=[IsOwnerOrReadOnly]
+
+class JugadorViewSet(viewsets.ModelViewSet):
+    queryset = Jugador.objects.all()
+    serializer_class = JugadorSerializer
+    permission_classes=[IsOwnerOrReadOnly]
 
 
+class PartidoViewSet(viewsets.ModelViewSet):
+    queryset = Partido.objects.all()
+    serializer_class = PartidoSerializer
+    permission_classes=[IsOwnerOrReadOnly]
+    permission_classes=[permissions.IsAuthenticated]
 
-
-"""
-
-"""
